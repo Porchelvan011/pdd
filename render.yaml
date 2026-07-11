@@ -31,12 +31,10 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          name: mentorix-backend
-          value: url
-        value: ${value}/api
+        sync: false
+        placeholder: "Insert backend API URL (e.g., https://mentorix-backend.onrender.com/api)"
       - key: VITE_SOCKET_URL
-        fromService:
-          name: mentorix-backend
-          value: url
+        sync: false
+        placeholder: "Insert backend Socket URL (e.g., https://mentorix-backend.onrender.com)"
+
 
