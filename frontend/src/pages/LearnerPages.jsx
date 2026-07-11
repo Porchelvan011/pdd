@@ -899,34 +899,52 @@ export const LearnerPages = () => {
             </div>
 
             <div style={{ display: 'grid', gap: '1.5rem' }}>
-              {sessions.map((s, idx) => (
-                <div key={idx} className="glass-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-                    <img src={s.peerAvatar} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} alt="Peer" />
-                    <div>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.25rem' }}>
-                        <h4 style={{ fontSize: '1.05rem', color: '#fff' }}>{s.title}</h4>
-                        <span className={`status-badge ${s.status}`}>{s.status}</span>
+              {sessions.length === 0 ? (
+                <div className="glass-card animate-pulse" style={{ padding: '3.5rem 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
+                  <div style={{ background: 'rgba(99, 102, 241, 0.1)', padding: '1.25rem', borderRadius: '50%', display: 'inline-flex' }}>
+                    <Calendar size={32} color="var(--primary)" />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#fff' }}>No Booked Sessions Found</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '340px', margin: '0 auto', lineHeight: '1.5' }}>
+                      Elevate your learning path by booking 1-on-1 video calls or project reviews with our vetted expert mentors.
+                    </p>
+                  </div>
+                  <button className="btn-primary" style={{ padding: '0.7rem 1.75rem', fontSize: '0.9rem', marginTop: '0.5rem', gap: '0.5rem' }} onClick={() => setActiveTab('discovery')}>
+                    Find a Mentor <Search size={16} />
+                  </button>
+                </div>
+              ) : (
+                sessions.map((s, idx) => (
+                  <div key={idx} className="glass-card session-row-responsive" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+                      <img src={s.peerAvatar} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} alt="Peer" />
+                      <div>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.25rem' }}>
+                          <h4 style={{ fontSize: '1.05rem', color: '#fff' }}>{s.title}</h4>
+                          <span className={`status-badge ${s.status}`}>{s.status}</span>
+                        </div>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>👤 Mentor: {s.peerName} • {s.timeSlot}</p>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>📅 Date: {s.date} • {s.notes || 'No notes added.'}</p>
                       </div>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>👤 Mentor: {s.peerName} • {s.timeSlot}</p>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>📅 Date: {s.date} • {s.notes || 'No notes added.'}</p>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {s.status === 'scheduled' ? (
+                        <a href={s.meetingLink} target="_blank" rel="noreferrer" className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                          Launch Video Meeting
+                        </a>
+                      ) : s.status === 'completed' ? (
+                        <button className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', borderColor: 'var(--warning)', color: 'var(--warning)' }} onClick={() => setReviewSessionId(s._id)}>
+                          Rate Session
+                        </button>
+                      ) : null}
                     </div>
                   </div>
-
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    {s.status === 'scheduled' ? (
-                      <a href={s.meetingLink} target="_blank" rel="noreferrer" className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                        Launch Video Meeting
-                      </a>
-                    ) : s.status === 'completed' ? (
-                      <button className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', borderColor: 'var(--warning)', color: 'var(--warning)' }} onClick={() => setReviewSessionId(s._id)}>
-                        Rate Session
-                      </button>
-                    ) : null}
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
+
 
             {/* Review popup Modal */}
             {reviewSessionId && (
