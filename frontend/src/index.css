@@ -286,8 +286,77 @@ h1, h2, h3, h4, h5, h6 {
   max-height: 85vh;
 }
 
+
+/* Mobile Menu Drawer Overlay */
+.mobile-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(8, 7, 24, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  z-index: 99;
+  animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.mobile-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: var(--transition-smooth);
+}
+
+.mobile-drawer-link:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.25);
+  color: var(--primary);
+  transform: translateX(4px);
+}
+
+/* Toggle Hamburger Menu Button Visibility */
+.menu-toggle-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.menu-toggle-btn:hover {
+  color: #fff;
+}
+
 /* Global Mobile Media Queries */
 @media (max-width: 768px) {
+  .menu-toggle-btn {
+    display: block !important;
+  }
+
+  .nav-menu-wrapper {
+    display: none !important; /* Hide desktop nav wrapper */
+  }
+
   /* Header Navigation Responsiveness */
   .nav-container {
     padding: 1rem !important;

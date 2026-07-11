@@ -13,8 +13,9 @@ import { MentorPages } from './pages/MentorPages';
 import { AdminPages } from './pages/AdminPages';
 
 import { 
-  Compass, ShieldCheck, LogIn, LogOut, Bell, Menu, X, ArrowRight, User
+  Compass, ShieldCheck, LogIn, LogOut, Bell, Menu, X, ArrowRight, User, Globe, Sparkles, Mail
 } from 'lucide-react';
+
 
 // Secure Session Authentication Guard
 const ProtectedRoute = ({ children }) => {
@@ -48,18 +49,24 @@ const HeaderNavigation = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+    setMobileMenuOpen(false);
   };
 
   return (
-    <nav className="nav-container">
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
+    <nav className="nav-container" style={{ position: 'relative' }}>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }} onClick={() => setMobileMenuOpen(false)}>
         <img src={logoImg} alt="Mentorix Logo" style={{ height: '32px', width: 'auto', borderRadius: '6px' }} />
         <span className="logo-glow" style={{ margin: 0 }}>
           Mentorix <span>AI</span>
         </span>
       </Link>
 
-      {/* Desktop Links */}
+      {/* Hamburger Toggle Button (mobile only) */}
+      <button className="menu-toggle-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
+
+      {/* Desktop Navigation Links */}
       <div className="nav-menu-wrapper" style={{ display: 'flex', gap: '1.75rem', alignItems: 'center' }}>
         <div className="nav-links-group" style={{ display: 'flex', gap: '1.75rem', alignItems: 'center' }}>
           <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>About</Link>
@@ -121,8 +128,46 @@ const HeaderNavigation = () => {
         </div>
       </div>
 
+      {/* Mobile Drawer (visible on mobile when open) */}
+      {mobileMenuOpen && (
+        <div className="mobile-drawer">
+          <Link to="/about" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+            <Globe size={18} /> About Us
+          </Link>
+          <Link to="/features" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+            <Sparkles size={18} /> Features
+          </Link>
+          <Link to="/contact" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+            <Mail size={18} /> Contact
+          </Link>
 
+          <div style={{ borderBottom: '1px solid var(--border-light)', margin: '0.5rem 0' }}></div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {user ? (
+              <>
+                <Link to={user.role === 'Admin' ? '/admin' : user.role === 'Mentor' ? '/mentor' : '/learner'} className="btn-secondary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem' }} onClick={() => setMobileMenuOpen(false)}>
+                  <User size={16} /> My Dashboard
+                </Link>
+                <button onClick={handleLogout} className="btn-secondary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem', borderColor: 'var(--danger)', color: 'var(--danger)' }}>
+                  <LogOut size={16} /> Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn-secondary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem' }} onClick={() => setMobileMenuOpen(false)}>
+                  Sign In <LogIn size={16} />
+                </Link>
+                <Link to="/signup" className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem' }} onClick={() => setMobileMenuOpen(false)}>
+                  Join Platform <ArrowRight size={16} />
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
+
   );
 };
 
