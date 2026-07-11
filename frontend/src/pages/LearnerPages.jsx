@@ -404,7 +404,7 @@ export const LearnerPages = () => {
         {/* ======================================= */}
         {activeTab === 'dashboard' && (
           <div style={{ display: 'grid', gap: '2rem' }}>
-            <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.1) 100%)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="glass-card welcome-banner" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.1) 100%)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Welcome Back, {user.name}! ⚡️</h2>
                 <p style={{ color: 'var(--text-muted)', maxWidth: '550px' }}>Your AI Matching profile calculates a strong synergy with our technical leads this week. Complete daily milestones to boost your platform XP level!</p>
@@ -422,7 +422,7 @@ export const LearnerPages = () => {
               <div className="glass-card">
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>My Advisors <Star size={18} fill="currentColor" color="var(--warning)" /></h3>
                 {mentors.filter(m => m.isApproved).slice(0, 2).map((m, idx) => (
-                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0', borderBottom: idx === 0 ? '1px solid var(--border-light)' : 'none' }}>
+                  <div key={idx} className="advisor-row-responsive" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0', borderBottom: idx === 0 ? '1px solid var(--border-light)' : 'none' }}>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                       <img src={m.user.avatar} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} alt={m.user.name} />
                       <div>
