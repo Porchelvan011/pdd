@@ -22,7 +22,15 @@ const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS || '').split(',').map(s => s.t
 app.use(cors({
   origin: (origin, cb) => {
     if (process.env.NODE_ENV !== 'production') return cb(null, true); // dev/demo: allow all
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    if (!origin) return cb(null, true);
+    if (
+      ALLOWED_ORIGINS.includes(origin) || 
+      origin.includes('onrender.com') || 
+      origin.includes('localhost') ||
+      ALLOWED_ORIGINS.length === 0
+    ) {
+      return cb(null, true);
+    }
     return cb(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
