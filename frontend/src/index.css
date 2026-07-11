@@ -308,9 +308,20 @@ h1, h2, h3, h4, h5, h6 {
   .nav-container .nav-menu-wrapper {
     flex-direction: column !important;
     width: 100%;
-    gap: 1rem !important;
+    gap: 1.25rem !important;
     align-items: center !important;
   }
+
+  .nav-buttons-group {
+    order: 1 !important;
+  }
+
+  .nav-links-group {
+    order: 2 !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
 
   /* Dashboard Split Screens */
   .dashboard-layout {

@@ -60,62 +60,67 @@ const HeaderNavigation = () => {
       </Link>
 
       {/* Desktop Links */}
-      <div style={{ display: 'flex', gap: '1.75rem', alignItems: 'center' }}>
-        <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>About</Link>
-        <Link to="/features" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Features</Link>
-        <Link to="/contact" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Contact</Link>
+      <div className="nav-menu-wrapper" style={{ display: 'flex', gap: '1.75rem', alignItems: 'center' }}>
+        <div className="nav-links-group" style={{ display: 'flex', gap: '1.75rem', alignItems: 'center' }}>
+          <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>About</Link>
+          <Link to="/features" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Features</Link>
+          <Link to="/contact" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Contact</Link>
+        </div>
 
-        {user ? (
-          /* User Logged In */
-          <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', position: 'relative' }}>
-            
-            {/* Notification alert Bell */}
-            <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => { setShowNotifyDropdown(!showNotifyDropdown); markAllAsRead(); }}>
-              <Bell size={20} color="var(--text-muted)" />
-              {unreadCount > 0 && (
-                <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '8px', height: '8px', background: 'var(--accent)', borderRadius: '50%' }}></span>
-              )}
-            </div>
-
-            {/* Notification drop-down box */}
-            {showNotifyDropdown && (
-              <div className="glass-card" style={{ position: 'absolute', top: '2.5rem', right: 0, width: '300px', padding: '1rem', zIndex: 100, border: '1px solid var(--primary)', maxHeight: '350px', overflowY: 'auto' }}>
-                <h4 style={{ fontSize: '0.9rem', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem' }}>System Alerts</h4>
-                {notifications.length === 0 ? (
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textAlign: 'center' }}>No new notifications.</p>
-                ) : (
-                  notifications.map((n, idx) => (
-                    <div key={idx} style={{ padding: '0.5rem 0', borderBottom: idx !== notifications.length - 1 ? '1px solid var(--border-light)' : 'none', opacity: n.isRead ? 0.6 : 1 }}>
-                      <h5 style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{n.title}</h5>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.message}</p>
-                    </div>
-                  ))
+        <div className="nav-buttons-group">
+          {user ? (
+            /* User Logged In */
+            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', position: 'relative' }}>
+              
+              {/* Notification alert Bell */}
+              <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => { setShowNotifyDropdown(!showNotifyDropdown); markAllAsRead(); }}>
+                <Bell size={20} color="var(--text-muted)" />
+                {unreadCount > 0 && (
+                  <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '8px', height: '8px', background: 'var(--accent)', borderRadius: '50%' }}></span>
                 )}
               </div>
-            )}
 
-            {/* Redirect Dashboard Shortcut */}
-            <Link to={user.role === 'Admin' ? '/admin' : user.role === 'Mentor' ? '/mentor' : '/learner'} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', gap: '0.4rem' }}>
-              <User size={14} /> My Dashboard
-            </Link>
+              {/* Notification drop-down box */}
+              {showNotifyDropdown && (
+                <div className="glass-card" style={{ position: 'absolute', top: '2.5rem', right: 0, width: '300px', padding: '1rem', zIndex: 100, border: '1px solid var(--primary)', maxHeight: '350px', overflowY: 'auto' }}>
+                  <h4 style={{ fontSize: '0.9rem', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem' }}>System Alerts</h4>
+                  {notifications.length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textAlign: 'center' }}>No new notifications.</p>
+                  ) : (
+                    notifications.map((n, idx) => (
+                      <div key={idx} style={{ padding: '0.5rem 0', borderBottom: idx !== notifications.length - 1 ? '1px solid var(--border-light)' : 'none', opacity: n.isRead ? 0.6 : 1 }}>
+                        <h5 style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{n.title}</h5>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.message}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
 
-            <button onClick={handleLogout} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', borderColor: 'var(--danger)', color: 'var(--danger)', gap: '0.4rem' }}>
-              <LogOut size={14} /> Log Out
-            </button>
+              {/* Redirect Dashboard Shortcut */}
+              <Link to={user.role === 'Admin' ? '/admin' : user.role === 'Mentor' ? '/mentor' : '/learner'} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', gap: '0.4rem' }}>
+                <User size={14} /> My Dashboard
+              </Link>
 
-          </div>
-        ) : (
-          /* User Logged Out */
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <Link to="/login" className="btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
-              Sign In <LogIn size={16} />
-            </Link>
-            <Link to="/signup" className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
-              Join Platform <ArrowRight size={16} />
-            </Link>
-          </div>
-        )}
+              <button onClick={handleLogout} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', borderColor: 'var(--danger)', color: 'var(--danger)', gap: '0.4rem' }}>
+                <LogOut size={14} /> Log Out
+              </button>
+
+            </div>
+          ) : (
+            /* User Logged Out */
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <Link to="/login" className="btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
+                Sign In <LogIn size={16} />
+              </Link>
+              <Link to="/signup" className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
+                Join Platform <ArrowRight size={16} />
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
+
 
     </nav>
   );
