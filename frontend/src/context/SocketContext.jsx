@@ -10,7 +10,9 @@ export const SocketProvider = ({ children }) => {
   const [unreadCount, setUnreadCount] = useState(0);
   const { user, token } = useAuth();
 
-  const SOCKET_URL = 'http://localhost:5000';
+  const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 
   useEffect(() => {
     if (!token || !user) {
@@ -51,7 +53,7 @@ export const SocketProvider = ({ children }) => {
     try {
       // In-app check: Let's seed mock initial notifications or fetch from user
       // Standard fetch
-      const res = await fetch(`http://localhost:5000/api/users/profile`, {
+      const res = await fetch(`${API_URL}/users/profile`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {

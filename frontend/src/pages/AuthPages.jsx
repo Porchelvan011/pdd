@@ -270,6 +270,7 @@ export const ForgotPasswordPage = () => {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { API_URL } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -277,7 +278,7 @@ export const ForgotPasswordPage = () => {
     setSuccess(null);
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+      const res = await fetch(`${API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -351,6 +352,7 @@ export const ResetPasswordPage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { API_URL } = useAuth();
 
   const handleReset = async (e) => {
     e.preventDefault();
@@ -358,7 +360,7 @@ export const ResetPasswordPage = () => {
     setSuccess(null);
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/auth/reset-password', {
+      const res = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: tokenInput, newPassword })

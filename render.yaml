@@ -1,0 +1,37 @@
+services:
+  # Backend Web Service (Node/Express/Socket.io)
+  - type: web
+    name: mentorix-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false
+        placeholder: "Insert MongoDB Connection string (e.g., MongoDB Atlas)"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+        placeholder: "Optional: Add your Gemini API key"
+
+  # Frontend Static Site (React/Vite)
+  - type: web
+    name: mentorix-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: mentorix-backend
+          value: url
+        value: ${value}/api
+      - key: VITE_SOCKET_URL
+        fromService:
+          name: mentorix-backend
+          value: url
