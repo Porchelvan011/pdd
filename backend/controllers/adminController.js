@@ -11,7 +11,8 @@ export const getUsers = async (req, res) => {
       } else if (u.role === 'Mentor') {
         profile = await dbHelper.findOne('Mentor', { userId: u._id });
       }
-      fullUsers.push({ ...u, profile });
+      const { password, ...safeU } = u;
+      fullUsers.push({ ...safeU, profile });
     }
     return res.json(fullUsers);
   } catch (error) {

@@ -2,6 +2,8 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import apiRoutes from './routes/api.js';
@@ -12,14 +14,32 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// Enable dynamic developer CORS
+// Security headers (CSP, X-Frame-Options, HSTS, etc.)
+app.use(helmet());
+
+// CORS: restrict to an allowlist in production; permissive only in dev/demo.
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
 app.use(cors({
-  origin: '*', // Allows testing anywhere
+  origin: (origin, cb) => {
+    if (process.env.NODE_ENV !== 'production') return cb(null, true); // dev/demo: allow all
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    return cb(new Error('Not allowed by CORS'));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '100kb' })); // cap body size
+
+// Rate limiting: protect auth endpoints from brute-force/credential-stuffing.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: Number(process.env.AUTH_RATE_LIMIT || 20), // 20 requests / 15 min / IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many attempts. Please try again later.' }
+});
+app.use('/api/auth', authLimiter);
 
 // Main Entry Base Logger
 app.use((req, res, next) => {
@@ -65,11 +85,11 @@ io.on('connection', (socket) => {
     try {
       console.log(`✉️ [Socket.io] Message from ${senderId} to ${receiverId}: "${text}"`);
 
-      // Store in Mongoose or Mock database
+      // Store in Mongoose or Mock database (sanitize text to neutralize XSS)
       const savedMessage = await dbHelper.create('Message', {
         senderId,
         receiverId,
-        text,
+        text: typeof text === 'string' ? text.replace(/<[^>]*>/g, '').replace(/[<>]/g, '') : '',
         attachment: attachment || null,
         isRead: false
       });

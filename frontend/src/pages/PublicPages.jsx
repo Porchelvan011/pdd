@@ -46,7 +46,7 @@ export const LandingPage = () => {
           { metric: "24/7", label: "AI Guidancer Support" }
         ].map((item, idx) => (
           <div key={idx} className="glass-card" style={{ textAlign: 'center', padding: '2rem' }}>
-            <h3 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '0.25rem' }}>{item.metric}</h3>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '0.25rem' }}>{item.metric}</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{item.label}</p>
           </div>
         ))}
@@ -84,7 +84,7 @@ export const LandingPage = () => {
             <div key={idx} className="glass-card" style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
               <img src={mentor.avatar} alt={mentor.name} style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--primary)' }} />
               <div>
-                <h4 style={{ fontSize: '1.15rem', color: '#fff' }}>{mentor.name}</h4>
+                <h3 style={{ fontSize: '1.15rem', color: '#fff' }}>{mentor.name}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>{mentor.role}</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '600' }}>{mentor.expertise}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.5rem', color: '#f59e0b', fontSize: '0.85rem' }}>
@@ -172,7 +172,7 @@ export const FeaturesPage = () => {
             <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '14px', width: 'max-content' }}>
               {feat.icon}
             </div>
-            <h3 style={{ fontSize: '1.35rem' }}>{feat.title}</h3>
+            <h2 style={{ fontSize: '1.35rem' }}>{feat.title}</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.6 }}>{feat.desc}</p>
           </div>
         ))}

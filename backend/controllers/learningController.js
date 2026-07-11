@@ -1,4 +1,5 @@
 import { dbHelper } from '../utils/dbHelper.js';
+import { sanitizeText } from '../utils/validate.js';
 
 export const getLearningPath = async (req, res) => {
   try {
@@ -252,7 +253,7 @@ export const submitFeedback = async (req, res) => {
       mentorId: session.mentorId,
       learnerId: req.user.id,
       rating: Number(rating),
-      comment: comment || ''
+      comment: sanitizeText(comment) || ''
     });
 
     // Re-calculate mentor average rating

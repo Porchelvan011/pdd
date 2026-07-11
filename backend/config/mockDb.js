@@ -208,7 +208,7 @@ export const mockDb = {
     }
   ],
 
-  feedback: [
+  feedbacks: [
     {
       _id: 'fee_1',
       sessionId: 'ses_2',

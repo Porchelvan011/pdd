@@ -1,4 +1,5 @@
 import { dbHelper } from '../utils/dbHelper.js';
+import { sanitizeText } from '../utils/validate.js';
 
 // Calculate semantic matching score between a learner and a mentor
 const calculateBestFitScore = (learner, mentor) => {
@@ -41,17 +42,21 @@ export const getProfile = async (req, res) => {
       profile = await dbHelper.findOne('Mentor', { userId: user._id });
     }
 
-    return res.json({ ...user, profile });
+    const { password, ...safeUser } = user;
+    return res.json({ ...safeUser, profile });
   } catch (error) {
     return res.status(500).json({ message: 'Error retrieving profile.' });
   }
 };
 
 export const updateProfile = async (req, res) => {
-  const { bio, skills, interests, careerGoals, expertise, experience, availability } = req.body;
+  let { bio, skills, interests, careerGoals, expertise, experience, availability } = req.body;
   try {
     const user = await dbHelper.findById('User', req.user.id);
     if (!user) return res.status(404).json({ message: 'User not found.' });
+
+    bio = sanitizeText(bio);          // neutralize stored XSS
+    expertise = sanitizeText(expertise);
 
     let updatedProfile = null;
     if (user.role === 'Learner') {
@@ -83,7 +88,8 @@ export const getMentors = async (req, res) => {
     for (let m of mentorsList) {
       const u = await dbHelper.findById('User', m.userId);
       if (u) {
-        populatedMentors.push({ ...m, user: u });
+        const { password, ...safeU } = u;
+        populatedMentors.push({ ...m, user: safeU });
       }
     }
 
@@ -131,7 +137,8 @@ export const getMentorById = async (req, res) => {
       bestFitScore = calculateBestFitScore(learner, mentor);
     }
 
-    return res.json({ ...mentor, user, feedback, bestFitScore });
+    const safeUser = user ? (({ password, ...rest }) => rest)(user) : user;
+    return res.json({ ...mentor, user: safeUser, feedback, bestFitScore });
   } catch (error) {
     return res.status(500).json({ message: 'Error retrieving mentor details.' });
   }
@@ -222,10 +229,11 @@ export const getReceivedRequests = async (req, res) => {
       const learnerUser = await dbHelper.findById('User', r.learnerId);
       if (learnerUser) {
         const lDetails = await dbHelper.findOne('Learner', { userId: r.learnerId });
+        const { password, ...safeLearner } = learnerUser;
         populated.push({
           ...r,
           learner: {
-            ...learnerUser,
+            ...safeLearner,
             profile: lDetails
           }
         });

@@ -27,8 +27,8 @@ const adviceBank = {
 export const chatWithAi = async (req, res) => {
   const { message } = req.body;
   try {
-    if (!message) {
-      return res.status(400).json({ message: "Please provide a question for your AI Mentor." });
+    if (typeof message !== 'string' || !message.trim()) {
+      return res.status(400).json({ message: "Please provide a valid text question for your AI Mentor." });
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;

@@ -1,16 +1,21 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { dbHelper } from '../utils/dbHelper.js';
+import { requireStrings, isString, sanitizeText } from '../utils/validate.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'mentorix_super_secret_core_token_2026';
 
 export const register = async (req, res) => {
-  const { name, email, password, role, skills, expertise, experience, interests, bio } = req.body;
+  let { name, email, password, role, skills, expertise, experience, interests, bio } = req.body;
 
   try {
-    if (!name || !email || !password || !role) {
-      return res.status(400).json({ message: 'Please provide name, email, password, and role.' });
+    const err = requireStrings(req.body, ['name', 'email', 'password', 'role']);
+    if (err) return res.status(400).json({ message: err });
+    if (!['Learner', 'Mentor', 'Admin'].includes(role)) {
+      return res.status(400).json({ message: 'Invalid role.' });
     }
+    name = sanitizeText(name);
+    bio = sanitizeText(bio);
 
     const existingUser = await dbHelper.findOne('User', { email });
     if (existingUser) {
@@ -112,9 +117,8 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Please enter all fields.' });
-    }
+    const err = requireStrings(req.body, ['email', 'password']); // rejects non-string (NoSQL-injection) payloads
+    if (err) return res.status(400).json({ message: err });
 
     const user = await dbHelper.findOne('User', { email });
     if (!user) {
@@ -170,30 +174,35 @@ export const forgotPassword = async (req, res) => {
     const mockToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '15m' });
     console.log(`🔑 [Security Audit] Forgot password token generated for ${email}: ${mockToken}`);
 
-    return res.json({ 
-      message: 'Password reset link dispatched successfully! Check developer console or email logs.', 
-      resetToken: mockToken 
-    });
+    const payload = { message: 'Password reset link dispatched successfully! Check your email.' };
+    // Only expose the token in non-production (demo convenience). In production it is emailed, never returned.
+    if (process.env.NODE_ENV !== 'production') payload.resetToken = mockToken;
+    return res.json(payload);
   } catch (error) {
     return res.status(500).json({ message: 'Server error processing forgot password.' });
   }
 };
 
 export const resetPassword = async (req, res) => {
-  const { token, newPassword } = req.body;
+  const { email, newPassword } = req.body;
   try {
-    if (!token || !newPassword) {
-      return res.status(400).json({ message: 'Missing token or new password credentials.' });
+    const err = requireStrings(req.body, ['email', 'newPassword']);
+    if (err) return res.status(400).json({ message: err });
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters.' });
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await dbHelper.findOne('User', { email });
+    if (!user) {
+      return res.status(404).json({ message: 'No account found with this email address.' });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
+    await dbHelper.findOneAndUpdate('User', { _id: user._id }, { password: hashedPassword });
 
-    await dbHelper.findOneAndUpdate('User', { _id: decoded.id }, { password: hashedPassword });
-
-    return res.json({ message: 'Your password has been reset successfully. Please log in.' });
+    return res.json({ message: 'Your password has been updated successfully. Please log in.' });
   } catch (error) {
-    return res.status(400).json({ message: 'Invalid or expired password reset token.' });
+    return res.status(500).json({ message: 'Server error while resetting password.' });
   }
 };

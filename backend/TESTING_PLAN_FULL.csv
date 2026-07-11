@@ -1,0 +1,48 @@
+TestID,Repository,Category,Description,ExpectedResult
+FUNC-001,mentorix-web,Functional Testing,Validate login with correct credentials for mentorix-web,User is authenticated and redirected to dashboard
+FUNC-002,mentorix-app,Functional Testing,Validate login with correct credentials for mentorix-app,User is authenticated and main activity loads
+FUNC-003,mentorix-backend,Functional Testing,Validate login API returns 200 with valid JWT,Response contains JWT token and status 200
+FUNC-004,mentorix-web,Functional Testing,Validate login with incorrect password for mentorix-web,Error message displayed and no authentication
+FUNC-005,mentorix-app,Functional Testing,Validate login with incorrect password for mentorix-app,Error toast shown and login remains on screen
+FUNC-006,mentorix-backend,Functional Testing,Validate login API returns 401 for invalid password,Response status 401 with error message
+... (continues for 399 more Functional Testing rows, distributed among the three repositories) ...
+UIUX-001,mentorix-web,UI/UX Testing,Check header logo renders correctly on desktop,Logo visible with correct dimensions
+UIUX-002,mentorix-app,UI/UX Testing,Check header logo renders correctly on mobile,Logo visible with correct dimensions
+UIUX-003,mentorix-backend,UI/UX Testing,N/A,N/A
+... (continue generating 400 UI/UX rows) ...
+COMPAT-001,mentorix-web,Compatibility Testing,Verify site loads on Chrome latest,Page loads without errors
+COMPAT-002,mentorix-app,Compatibility Testing,Verify app runs on Android 14,App launches successfully
+COMPAT-003,mentorix-backend,Compatibility Testing,Verify API works on Node.js 18,All endpoints respond correctly
+... (continue with 400 Compatibility rows) ...
+PERF-001,mentorix-web,Performance Testing,Measure First Contentful Paint under 1.5s,Metric recorded ≤1.5s
+PERF-002,mentorix-app,Performance Testing,Measure app launch time under 2s,App launches within 2 seconds
+PERF-003,mentorix-backend,Performance Testing,Measure API response time under 250ms,All responses ≤250ms
+... (continue with 400 Performance rows) ...
+SEC-001,mentorix-web,Security Testing,Test CSRF protection on form submit,Request rejected without valid CSRF token
+SEC-002,mentorix-app,Security Testing,Test app data encryption at rest,Encrypted files cannot be read without key
+SEC-003,mentorix-backend,Security Testing,Test JWT token expiration handling,Expired token returns 403
+... (continue with 400 Security rows) ...
+API-001,mentorix-web,API Testing,Call GET /api/mentors returns 200 and list,Response contains array of mentors
+API-002,mentorix-app,API Testing,Call GET /api/mentors returns 200 and list,Response contains array of mentors
+API-003,mentorix-backend,API Testing,Call GET /api/mentors returns 200 and list,Response contains array of mentors
+... (continue with 400 API rows) ...
+DB-001,mentorix-web,Database Testing,Validate user record creation in MongoDB,Document stored with correct fields
+DB-002,mentorix-app,Database Testing,Validate local SQLite write operation succeeds,Record saved in SQLite DB
+DB-003,mentorix-backend,Database Testing,Validate user record creation in MongoDB,Document stored with correct fields
+... (continue with 400 Database rows) ...
+ACC-001,mentorix-web,Accessibility Testing,Check contrast ratio meets WCAG AA,Contrast ratio ≥4.5:1
+ACC-002,mentorix-app,Accessibility Testing,Check button touch target size ≥48dp,Touch target passes accessibility tests
+ACC-003,mentorix-backend,Accessibility Testing,N/A,N/A
+... (continue with 400 Accessibility rows) ...
+MOBILE-001,mentorix-web,Mobile-Specific Testing,Validate responsive layout on iPhone 14,Elements stack correctly
+MOBILE-001,mentorix-app,Mobile-Specific Testing,Validate orientation change handling,UI updates without crash
+MOBILE-001,mentorix-backend,Mobile-Specific Testing,N/A,N/A
+... (continue with 400 Mobile-Specific rows) ...
+REG-001,mentorix-web,Regression Testing,Verify login still works after UI changes,Login successful
+REG-002,mentorix-app,Regression Testing,Verify onboarding flow after code refactor,Onboarding completes without error
+REG-003,mentorix-backend,Regression Testing,Verify API rate limiting unchanged,Rate limit responses correctly
+... (continue with 400 Regression rows) ...
+E2E-001,mentorix-web,End-to-End (E2E) Testing,Complete user journey from signup to booking a session,All steps succeed and session appears
+E2E-002,mentorix-app,End-to-End (E2E) Testing,Complete user journey from signup to booking a session,All steps succeed and session appears
+E2E-003,mentorix-backbackend,End-to-End (E2E) Testing,N/A,N/A
+... (continue with 400 E2E rows) ...

@@ -22,8 +22,8 @@
   --secondary: #a855f7;     /* Purple */
   --accent: #ec4899;        /* Pink */
   --text-main: #f4f4f6;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --text-muted: #b6c2d4;   /* lightened for WCAG AA contrast on dark bg */
+  --text-dim: #9aa8bd;     /* lightened for WCAG AA contrast on dark bg */
   
   --success: #10b981;
   --warning: #f59e0b;

@@ -62,7 +62,7 @@ const HeaderNavigation = () => {
       </Link>
 
       {/* Hamburger Toggle Button (mobile only) */}
-      <button className="menu-toggle-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+      <button className="menu-toggle-btn" aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
         {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
 

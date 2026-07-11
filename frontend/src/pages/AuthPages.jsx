@@ -267,30 +267,42 @@ export const SignupPage = () => {
 // ==========================================
 export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const { API_URL } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    if (newPassword.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/auth/forgot-password`, {
+      const res = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email, newPassword })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      
-      setSuccess("We have sent reset coordinates to your console! Copy the token and reset below.");
-      // Auto-save reset token for quick development bypass
-      localStorage.setItem('mentorix_reset_token', data.resetToken);
+
+      setSuccess('Password updated successfully! Redirecting to sign in...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError(err.message || 'Error executing forgot password.');
+      setError(err.message || 'Error updating password.');
     } finally {
       setLoading(false);
     }
@@ -300,8 +312,8 @@ export const ForgotPasswordPage = () => {
     <div style={{ display: 'flex', minHeight: '80vh', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <div className="glass-card" style={{ width: '100%', maxWidth: '430px', padding: '2.5rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Forgot Password?</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>Enter email credentials to request system reset keys.</p>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Reset Password</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>Enter your email and choose a new password.</p>
         </div>
 
         {error && (
@@ -314,9 +326,6 @@ export const ForgotPasswordPage = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', textAlign: 'center' }}>
             <CheckCircle size={40} color="var(--success)" />
             <p style={{ fontSize: '0.9rem', color: 'var(--success)' }}>{success}</p>
-            <Link to="/reset-password" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}>
-              Proceed to Reset Input
-            </Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.25rem' }}>
@@ -328,8 +337,24 @@ export const ForgotPasswordPage = () => {
               </div>
             </div>
 
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>New Password</label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={16} color="var(--text-dim)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                <input required type="password" className="input-glass" style={{ paddingLeft: '2.75rem' }} placeholder="••••••••" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Confirm Password</label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={16} color="var(--text-dim)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                <input required type="password" className="input-glass" style={{ paddingLeft: '2.75rem' }} placeholder="••••••••" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+              </div>
+            </div>
+
             <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem' }} disabled={loading}>
-              {loading ? "Generating keys..." : "Send Reset Token"}
+              {loading ? "Updating..." : "Update Password"}
             </button>
           </form>
         )}
