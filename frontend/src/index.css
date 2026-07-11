@@ -258,3 +258,113 @@ h1, h2, h3, h4, h5, h6 {
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* ==========================================
+   MOBILE RESPONSIVENESS AND WEB LAYOUT ADJUSTMENTS
+   ========================================== */
+
+/* Responsive Dashboard Layouts */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 85vh;
+  background: var(--bg-deep);
+}
+
+.dashboard-sidebar {
+  background: #07051a;
+  border-right: 1px solid var(--border-light);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashboard-content {
+  padding: 2.5rem;
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+/* Global Mobile Media Queries */
+@media (max-width: 768px) {
+  /* Header Navigation Responsiveness */
+  .nav-container {
+    padding: 1rem !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .nav-container > div {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    width: 100%;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .nav-container .nav-menu-wrapper {
+    flex-direction: column !important;
+    width: 100%;
+    gap: 1rem !important;
+    align-items: center !important;
+  }
+
+  /* Dashboard Split Screens */
+  .dashboard-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-sidebar {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 1.25rem 1rem !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Hide sidebar profile header on mobile to maximize viewport area */
+  .dashboard-sidebar > div:first-child {
+    display: none !important;
+  }
+
+  /* Style sidebar navigation buttons for horizontal mobile scrolling tabs */
+  .dashboard-sidebar .btn-secondary {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dashboard-content {
+    padding: 1.5rem 1rem !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+
+  /* Automatically stack any 2-column or 3-column inline grid layouts */
+  .dashboard-content div[style*="display: grid"],
+  .dashboard-content div[style*="display:grid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Stacking inline flex rows on mobile */
+  .dashboard-content div[style*="display: flex"][style*="flex-direction: row"],
+  .dashboard-content div[style*="display:flex"][style*="flex-direction:row"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  /* Custom overrides for specific split content grids or cards */
+  div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+

@@ -123,10 +123,10 @@ export const MentorPages = () => {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', minHeight: '85vh', background: 'var(--bg-deep)' }}>
+    <div className="dashboard-layout">
       
       {/* Sidebar Controller */}
-      <div style={{ background: '#07051a', borderRight: '1px solid var(--border-light)', padding: '2rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <div className="dashboard-sidebar">
         <div style={{ marginBottom: '2rem', padding: '0 0.5rem' }}>
           <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-dim)' }}>Mentor portal</p>
           <h4 style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 'bold' }}>{user.name}</h4>
@@ -150,7 +150,7 @@ export const MentorPages = () => {
       </div>
 
       {/* Main Panel Content Area */}
-      <div style={{ padding: '2.5rem', overflowY: 'auto', maxHeight: '85vh' }}>
+      <div className="dashboard-content">
         
         {/* ======================================= */}
         {/* TAB 1: MENTOR DASHBOARD */}
