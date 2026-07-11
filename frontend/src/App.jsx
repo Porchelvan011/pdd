@@ -136,10 +136,16 @@ const PageLayout = ({ children }) => {
       </div>
       
       {/* Premium minimal Footer */}
-      <footer style={{ borderTop: '1px solid var(--border-light)', padding: '2rem', textAlign: 'center', background: '#02000e', color: 'var(--text-dim)', fontSize: '0.8rem' }}>
+      <footer style={{ borderTop: '1px solid var(--border-light)', padding: '2.5rem 2rem', textAlign: 'center', background: '#02000e', color: 'var(--text-dim)', fontSize: '0.8rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '1.25rem' }}>
+          <Link to="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.85rem' }}>About</Link>
+          <Link to="/features" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.85rem' }}>Features</Link>
+          <Link to="/contact" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.85rem' }}>Contact</Link>
+        </div>
         <p>© 2026 Mentorix – AI Mentorship Platform. Seed database memory fallback active. All rights reserved.</p>
       </footer>
     </div>
+
   );
 };
 

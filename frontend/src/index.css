@@ -291,36 +291,22 @@ h1, h2, h3, h4, h5, h6 {
   /* Header Navigation Responsiveness */
   .nav-container {
     padding: 1rem !important;
-    flex-direction: column !important;
-    gap: 1rem !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
     align-items: center !important;
-    text-align: center !important;
-  }
-
-  .nav-container > div {
-    flex-direction: column !important;
-    gap: 1rem !important;
-    width: 100%;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .nav-container .nav-menu-wrapper {
-    flex-direction: column !important;
-    width: 100%;
-    gap: 1.25rem !important;
-    align-items: center !important;
-  }
-
-  .nav-buttons-group {
-    order: 1 !important;
   }
 
   .nav-links-group {
-    order: 2 !important;
-    flex-direction: column !important;
-    gap: 1rem !important;
+    display: none !important;
   }
+
+  .nav-container .nav-menu-wrapper {
+    flex-direction: row !important;
+    width: auto !important;
+    gap: 0.75rem !important;
+    align-items: center !important;
+  }
+
 
 
   /* Dashboard Split Screens */
