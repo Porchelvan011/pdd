@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SocketProvider, useSocket } from './context/SocketContext';
+import logoImg from './assets/logo.png';
+
 
 // Import combined pages
 import { LandingPage, AboutPage, FeaturesPage, ContactPage } from './pages/PublicPages';
@@ -50,8 +52,11 @@ const HeaderNavigation = () => {
 
   return (
     <nav className="nav-container">
-      <Link to="/" className="logo-glow">
-        Mentorix <span>AI</span>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
+        <img src={logoImg} alt="Mentorix Logo" style={{ height: '32px', width: 'auto', borderRadius: '6px' }} />
+        <span className="logo-glow" style={{ margin: 0 }}>
+          Mentorix <span>AI</span>
+        </span>
       </Link>
 
       {/* Desktop Links */}
