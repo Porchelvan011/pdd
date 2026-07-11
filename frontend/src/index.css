@@ -495,4 +495,24 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Quick suggestion chips for chatbot */
+.quick-chip {
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.quick-chip:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+
 

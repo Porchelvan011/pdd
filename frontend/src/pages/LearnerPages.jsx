@@ -264,12 +264,10 @@ export const LearnerPages = () => {
   };
 
   // 6. AI Guidance Query
-  const handleAiSearch = async (e) => {
-    e.preventDefault();
-    if (!aiText) return;
+  const submitAiQuery = async (queryText) => {
+    if (!queryText) return;
 
-    const userQ = aiText;
-    setAiHistory(prev => [...prev, { sender: 'user', text: userQ }]);
+    setAiHistory(prev => [...prev, { sender: 'user', text: queryText }]);
     setAiText('');
     setAiLoading(true);
 
@@ -280,7 +278,7 @@ export const LearnerPages = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ message: userQ })
+        body: JSON.stringify({ message: queryText })
       });
       const data = await res.json();
       if (res.ok) {
@@ -292,6 +290,13 @@ export const LearnerPages = () => {
       setAiLoading(false);
     }
   };
+
+  const handleAiSearch = async (e) => {
+    e.preventDefault();
+    if (!aiText) return;
+    submitAiQuery(aiText);
+  };
+
 
   // 7. Auto AI Path Onboarding
   const handleGeneratePath = async (e) => {
@@ -724,13 +729,16 @@ export const LearnerPages = () => {
             </div>
 
             {/* Quick chips shortcuts */}
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-              {["How to structure React context?", "Best practices for Node routing?", "Mongoose DB schema optimization tips", "Suggestions to raise my profile XP?"].map((chip, idx) => (
-                <button key={idx} style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-light)', borderRadius: '20px', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => { setAiText(chip); }}>
-                  {chip}
-                </button>
-              ))}
-            </div>
+            {aiHistory.length <= 1 && (
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+                {["How to structure React context?", "Best practices for Node routing?", "Mongoose DB schema optimization tips", "Suggestions to raise my profile XP?"].map((chip, idx) => (
+                  <button key={idx} className="quick-chip" onClick={() => submitAiQuery(chip)}>
+                    {chip}
+                  </button>
+                ))}
+              </div>
+            )}
+
 
             {/* Form actions */}
             <form onSubmit={handleAiSearch} style={{ display: 'flex', gap: '1rem' }}>
